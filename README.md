@@ -1,6 +1,6 @@
 # Gateway router 
 
-to limit and balance requests between workers, see [TEST_README.md](TEST_README.md) for more information
+to limit and balance requests among workers, see [TASK_README.md](TASK_README.md) for more information
 
 
 # How to run

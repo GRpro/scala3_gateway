@@ -2,13 +2,15 @@ package com.gr.gateway
 
 import cats.effect.kernel.{Fiber, GenConcurrent}
 import cats.effect.std.{AtomicCell, Queue, Semaphore}
-import cats.effect.{Async, Deferred}
+import cats.effect.{Async, Deferred, Sync}
 import cats.implicits.*
 import cats.syntax.all.*
 import cats.{Applicative, Functor, Monad, Traverse}
 import com.gr.gateway.Fortune.FortuneError
 import com.gr.gateway.config.{EndpointConfig, GatewayConfig}
 import com.gr.gateway.{Fortune, GenConcurrentThrowable}
+import org.typelevel.log4cats.Logger
+import org.typelevel.log4cats.slf4j.Slf4jLogger
 
 import java.util.concurrent.{ExecutorService, Executors}
 import scala.concurrent.ExecutionContext
@@ -18,6 +20,8 @@ trait RequestScheduler[F[_] : Monad : Async : GenConcurrentThrowable]:
   def run(): F[Fiber[F, Throwable, Unit]]
 
 object RequestScheduler:
+
+  implicit def logger[F[_]: Sync]: Logger[F] = Slf4jLogger.getLogger[F]
 
   def impl[F[_] : Monad : Async : GenConcurrentThrowable](config: GatewayConfig,
                                                           fortuneService: Fortune[F],
@@ -48,10 +52,7 @@ object RequestScheduler:
         for {
           request <- requestQueue.take
           permit <- workersQueue.take
-
-          // TODO log
-          _ = println(s"Schedule request to ${permit.connection}")
-
+          _ <- Logger[F].info(s"Schedule request to ${permit.connection}")
           // execute request in a separate fiber
           _ <- GenConcurrent[F].start(executeRequest(request, workersQueue, permit))
         } yield ()
@@ -61,11 +62,9 @@ object RequestScheduler:
                                        permit: Permit): F[Unit] =
         for {
           _ <- activeRequestsStats.update(_ + 1)
+          _ <- Logger[F].info(s"Executing request to ${permit.connection}")
           result <- fortuneService.get(permit.connection)
           _ <- activeRequestsStats.update(_ - 1)
-
-          // TODO log
-          _ = println(s"Request to ${permit.connection}")
           _ <- workersQueue.offer(permit)
           _ <- promise.complete(result)
         } yield ()
