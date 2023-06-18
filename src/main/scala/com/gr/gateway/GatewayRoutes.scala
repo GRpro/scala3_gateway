@@ -4,7 +4,8 @@ import cats.effect.kernel.GenConcurrent
 import cats.effect.{Deferred, Sync}
 import cats.effect.std.Queue
 import cats.syntax.all.*
-import com.gr.gateway.Fortune.FortuneError
+import com.gr.gateway.service.Fortune.FortuneError
+import com.gr.gateway.service.{Fortune, Stats}
 import org.http4s.HttpRoutes
 import org.http4s.dsl.Http4sDsl
 

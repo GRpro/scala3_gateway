@@ -4,9 +4,10 @@ import cats.{Functor, Monad, Traverse}
 import cats.effect.{Async, Deferred, Resource}
 import cats.syntax.all.*
 import com.comcast.ip4s.*
-import com.gr.gateway.Fortune.FortuneError
+import com.gr.gateway.service.Fortune.FortuneError
 import com.gr.gateway.config.{Config, EndpointConfig, GatewayConfig, HttpConfig}
 import cats.effect.std.{AtomicCell, Queue}
+import com.gr.gateway.service.{Fortune, Stats}
 import fs2.io.net.Network
 import org.http4s.ember.client.EmberClientBuilder
 import org.http4s.ember.server.EmberServerBuilder

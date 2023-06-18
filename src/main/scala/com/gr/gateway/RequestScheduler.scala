@@ -6,9 +6,10 @@ import cats.effect.{Async, Deferred, Sync}
 import cats.implicits.*
 import cats.syntax.all.*
 import cats.{Applicative, Functor, Monad, Traverse}
-import com.gr.gateway.Fortune.FortuneError
+import com.gr.gateway.service.Fortune.FortuneError
 import com.gr.gateway.config.{EndpointConfig, GatewayConfig}
-import com.gr.gateway.{Fortune, GenConcurrentThrowable}
+import com.gr.gateway.{GenConcurrentThrowable}
+import com.gr.gateway.service.Fortune
 import org.typelevel.log4cats.Logger
 import org.typelevel.log4cats.slf4j.Slf4jLogger
 

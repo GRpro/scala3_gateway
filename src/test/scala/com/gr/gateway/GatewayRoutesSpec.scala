@@ -3,11 +3,12 @@ package com.gr.gateway
 import cats.effect.kernel.GenConcurrent
 import cats.effect.std.{AtomicCell, Queue}
 import cats.effect.{Deferred, IO}
-import com.gr.gateway.Fortune.{FortuneError, FortuneResponse}
+import com.gr.gateway.service.Fortune.{FortuneError, FortuneResponse}
+import com.gr.gateway.service.{Fortune, Stats}
 import org.http4s.*
 import org.http4s.implicits.*
 import munit.CatsEffectSuite
-import com.gr.gateway.Stats.Data._
+import com.gr.gateway.service.Stats.Data.*
 import org.http4s.FormDataDecoder.formEntityDecoder
 
 class GatewayRoutesSpec extends CatsEffectSuite:

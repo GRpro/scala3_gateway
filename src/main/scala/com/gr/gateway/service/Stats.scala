@@ -1,8 +1,9 @@
-package com.gr.gateway
+package com.gr.gateway.service
 
-import cats.{Applicative, FlatMap, Monad}
 import cats.effect.std.{AtomicCell, Queue}
 import cats.syntax.all.*
+import cats.{Applicative, FlatMap, Monad}
+import com.gr.gateway.service.Stats
 import io.circe.{Encoder, Json}
 import org.http4s.EntityEncoder
 import org.http4s.circe.*

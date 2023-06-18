@@ -2,10 +2,12 @@ package com.gr.gateway
 import cats.Monad
 import cats.effect.{Deferred, IO}
 import cats.effect.std.{AtomicCell, Queue}
-import com.gr.gateway.Fortune.FortuneError
+import com.gr.gateway.service.Fortune.FortuneError
 import com.gr.gateway.config.{EndpointConfig, GatewayConfig}
+import com.gr.gateway.service.Fortune
 import munit.CatsEffectSuite
-import scala.concurrent.duration._
+
+import scala.concurrent.duration.*
 
 
 class RequestSchedulerSpec extends CatsEffectSuite:

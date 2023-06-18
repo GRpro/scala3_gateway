@@ -1,18 +1,19 @@
-package com.gr.gateway
+package com.gr.gateway.service
 
 import cats.data.EitherT
 import cats.effect.Concurrent
+import cats.syntax.*
 import cats.syntax.all.*
-import com.gr.gateway.Fortune.FortuneError
+import com.gr.gateway.service.Fortune
 import com.gr.gateway.config.EndpointConfig
+import com.gr.gateway.service.Fortune.FortuneError
 import io.circe.{Decoder, Encoder}
 import org.http4s.*
-import org.http4s.implicits.*
+import org.http4s.Method.*
+import org.http4s.circe.*
 import org.http4s.client.Client
 import org.http4s.client.dsl.Http4sClientDsl
-import org.http4s.circe.*
-import org.http4s.Method.*
-import cats.syntax.*
+import org.http4s.implicits.*
 
 trait Fortune[F[_]]:
   def get(connectionConfig: EndpointConfig): F[FortuneError Either Fortune.FortuneResponse]
