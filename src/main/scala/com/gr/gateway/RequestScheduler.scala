@@ -63,8 +63,9 @@ object RequestScheduler:
                                        permit: Permit): F[Unit] =
         for {
           _ <- activeRequestsStats.update(_ + 1)
-          _ <- Logger[F].info(s"Executing request to ${permit.connection}")
+          _ <- Logger[F].info(s"Request to ${permit.connection} starting")
           result <- fortuneService.get(permit.connection)
+          _ <- Logger[F].info(s"Request to ${permit.connection} finished")
           _ <- activeRequestsStats.update(_ - 1)
           _ <- workersQueue.offer(permit)
           _ <- promise.complete(result)

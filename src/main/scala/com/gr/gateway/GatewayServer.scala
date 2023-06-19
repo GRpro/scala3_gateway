@@ -21,15 +21,13 @@ object GatewayServer:
     for {
       client <- EmberClientBuilder.default[F].build
       config <- Resource.eval(Config.load())
-
-      fortuneAlg = Fortune.impl[F](client)
-
       requestQueue <- Resource.eval(
         Queue.unbounded[F, Deferred[F, Either[FortuneError, Fortune.FortuneResponse]]]
       )
       activeRequestsStats <- Resource.eval(AtomicCell[F].of(0))
 
       statsAlg = Stats.impl[F](requestQueue, activeRequestsStats)
+      fortuneAlg = Fortune.impl[F](client)
 
       requestSchedulerFiber <- Resource.eval(
         RequestScheduler.impl(config.gateway, fortuneAlg, activeRequestsStats, requestQueue).run()
